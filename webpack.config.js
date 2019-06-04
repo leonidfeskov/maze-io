@@ -42,4 +42,6 @@ module.exports = {
             template: 'src/client/html/index.html',
         }),
     ],
+    watch: true,
+    mode: "development",
 };
