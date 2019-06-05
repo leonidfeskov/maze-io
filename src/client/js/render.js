@@ -1,5 +1,7 @@
-import { getAsset } from './assets';
 import { PLAYER_SIZE } from '../../shared/constants';
+import { getAsset } from './assets';
+import { getCurrentState } from './state';
+
 
 const canvas = document.querySelector('.js-game');
 const context = canvas.getContext('2d');
@@ -18,8 +20,9 @@ function render() {
     if (!renderProcess) {
         return;
     }
+    const state = getCurrentState();
     renderBackground();
-    renderPlayer(20, 20);
+    renderPlayer(state.player);
     window.requestAnimationFrame(render);
 }
 
@@ -28,7 +31,7 @@ function renderBackground() {
     context.fillRect(0, 0, WIDTH, HEIGHT);
 }
 
-function renderPlayer(x, y) {
+function renderPlayer({ x, y }) {
     const playerImage = getAsset('player.svg');
     context.drawImage(playerImage, x, y, PLAYER_SIZE, PLAYER_SIZE);
 }

@@ -1,4 +1,4 @@
-import { connect } from './networking';
+import { connect, play } from './networking';
 import { downloadAssets } from './assets';
 import { startRendering, stopRendering } from './render';
 import { startCapturingInput, stopCapturingInput } from './input';
@@ -14,8 +14,8 @@ Promise.all([
     //buttonLogin.addEventListener('click', (event) => {
         //event.preventDefault();
     console.log('=== PLAY ===');
+    play(userNameInput.value);
     startCapturingInput();
     startRendering();
-
     //});
 });
