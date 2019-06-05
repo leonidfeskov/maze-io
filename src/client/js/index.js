@@ -1,6 +1,7 @@
 import { connect } from './networking';
 import { downloadAssets } from './assets';
-import { renderStart, renderStop } from './render';
+import { startRendering, stopRendering } from './render';
+import { startCapturingInput, stopCapturingInput } from './input';
 
 const formLogin = document.querySelector('.js-form-login');
 const userNameInput = document.querySelector('.js-user-name');
@@ -12,7 +13,9 @@ Promise.all([
 ]).then(() => {
     //buttonLogin.addEventListener('click', (event) => {
         //event.preventDefault();
-        console.log('=== PLAY ===');
-        renderStart();
+    console.log('=== PLAY ===');
+    startCapturingInput();
+    startRendering();
+
     //});
 });

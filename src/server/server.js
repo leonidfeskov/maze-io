@@ -28,5 +28,9 @@ io.on('connection', (socket) => {
     socket.on(MESSAGE.JOIN_GAME, (userName) => {
         console.log('=== JOIN GAME ====', userName);
     });
+
+    socket.on(MESSAGE.INPUT, (direction) => {
+        console.log('=== DIRECTION ===', direction);
+    })
 });
 

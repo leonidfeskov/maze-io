@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import { throttle } from 'throttle-debounce';
 
 import { MESSAGE } from '../../shared/constants';
 
@@ -20,3 +21,7 @@ export const connect = (onGameOver) => {
 export const play = (userName) => {
     socket.emit(MESSAGE.JOIN_GAME, userName);
 };
+
+export const updatePosition = throttle(20, (direction) => {
+    socket.emit(MESSAGE.INPUT, direction);
+});

@@ -33,11 +33,11 @@ function renderPlayer(x, y) {
     context.drawImage(playerImage, x, y, PLAYER_SIZE, PLAYER_SIZE);
 }
 
-export const renderStart = () => {
+export const startRendering = () => {
     renderProcess = true;
     window.requestAnimationFrame(render);
 };
 
-export const renderStop = () => {
+export const stopRendering = () => {
     renderProcess = false;
 };
