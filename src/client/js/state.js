@@ -1,8 +1,9 @@
 let lastGameUpdate = {
-    player: {
+    me: {
         x: 0,
         y: 0,
-    }
+    },
+    // players: [],
 };
 
 export function processGameUpdate(update) {

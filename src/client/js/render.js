@@ -22,7 +22,8 @@ function render() {
     }
     const state = getCurrentState();
     renderBackground();
-    renderPlayer(state.player);
+    renderMe(state.me);
+    //renderPlayers(state.players);
     window.requestAnimationFrame(render);
 }
 
@@ -31,9 +32,18 @@ function renderBackground() {
     context.fillRect(0, 0, WIDTH, HEIGHT);
 }
 
-function renderPlayer({ x, y }) {
+function renderPlayer({x, y}) {
     const playerImage = getAsset('player.svg');
     context.drawImage(playerImage, x, y, PLAYER_SIZE, PLAYER_SIZE);
+}
+
+
+function renderMe(player) {
+    renderPlayer(player);
+}
+
+function renderPlayers(players) {
+    players.forEach(renderPlayer);
 }
 
 export const startRendering = () => {

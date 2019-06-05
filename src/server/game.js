@@ -75,7 +75,11 @@ class Game {
     updateState(player) {
         return {
             t: Date.now(),
-            player: player.getState(),
+            me: player.getState(),
+            // players: Object.keys(this.players)
+            //     .filter((playerId) => playerId !== player.id)
+            //     .map((playerId) => this.players[playerId].getState())
+            // ,
         };
     }
 }
