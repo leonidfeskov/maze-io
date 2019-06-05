@@ -3,6 +3,7 @@ let lastGameUpdate = {
         x: 0,
         y: 0,
     },
+    map: [[]],
     // players: [],
 };
 

@@ -1,5 +1,6 @@
 const { MESSAGE } = require('../shared/constants');
 const Player = require('./player');
+const Map = require('./maps');
 
 const FPS = 1000 / 60;
 
@@ -16,6 +17,7 @@ class Game {
         this.players = {};
         this.lastUpdateTime = Date.now();
         this.shouldSendUpdate = false;
+        this.map = new Map(1);
 
         setInterval(() => {
             this.update()
@@ -76,6 +78,7 @@ class Game {
         return {
             t: Date.now(),
             me: player.getState(),
+            map: this.map.getState(),
             // players: Object.keys(this.players)
             //     .filter((playerId) => playerId !== player.id)
             //     .map((playerId) => this.players[playerId].getState())
