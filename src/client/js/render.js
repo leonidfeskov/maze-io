@@ -42,9 +42,11 @@ function renderMap(map) {
     });
 }
 
-function renderPlayer({x, y}) {
+const PLAYER_COORD = (MAP_SIZE * CELL_SIZE - PLAYER_SIZE) / 2;
+
+function renderPlayer() {
     const playerImage = getAsset('player.svg');
-    context.drawImage(playerImage, x, y, PLAYER_SIZE, PLAYER_SIZE);
+    context.drawImage(playerImage, PLAYER_COORD, PLAYER_COORD, PLAYER_SIZE, PLAYER_SIZE);
 }
 
 function renderMe(player) {

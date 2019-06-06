@@ -1,6 +1,7 @@
 const { MESSAGE, MAZE_SIZE } = require('../shared/constants');
 const Player = require('./player');
 const Maze = require('./maze');
+const { getVisibleMap } = require('./maze');
 
 const FPS = 1000 / 60;
 
@@ -52,7 +53,7 @@ class Game {
     }
 
     stopPlayer(socket) {
-        const player = this.getPlayer(socket)
+        const player = this.getPlayer(socket);
         if (player) {
             player.stop();
         }
@@ -86,7 +87,7 @@ class Game {
         return {
             t: Date.now(),
             me: player.getState(),
-            map: this.maze.getState(),
+            map: this.maze.getVisibleMapForPlayer(player),
             // players: Object.keys(this.players)
             //     .filter((playerId) => playerId !== player.id)
             //     .map((playerId) => this.players[playerId].getState())
