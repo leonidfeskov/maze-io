@@ -1,6 +1,6 @@
-const { MESSAGE } = require('../shared/constants');
+const { MESSAGE, MAZE_SIZE } = require('../shared/constants');
 const Player = require('./player');
-const Map = require('./maps');
+const Maze = require('./maze');
 
 const FPS = 1000 / 60;
 
@@ -17,17 +17,24 @@ class Game {
         this.players = {};
         this.lastUpdateTime = Date.now();
         this.shouldSendUpdate = false;
-        this.map = new Map(1);
+        this.maze = new Maze();
 
         setInterval(() => {
             this.update()
         }, FPS);
     }
 
+    getPlayer(socket) {
+        const id = socket.id;
+        return this.players[id];
+    }
+
     addPlayer(socket, userName) {
         const id = socket.id;
         this.sockets[id] = socket;
-        this.players[id] = new Player(id, userName);
+        // TODO сделать случайные координаты для игрока
+        const center = Math.floor(MAZE_SIZE / 2);
+        this.players[id] = new Player(id, userName, center, center);
     }
 
     removePlayer(socket) {
@@ -37,16 +44,17 @@ class Game {
     }
 
     movePlayer(socket, direction) {
-        const id = socket.id;
-        if (this.players[id]) {
-            this.players[id].move(DIRECTION_MAPPING[direction]);
+        const player = this.getPlayer(socket);
+
+        if (player) {
+            player.move(DIRECTION_MAPPING[direction]);
         }
     }
 
     stopPlayer(socket) {
-        const id = socket.id;
-        if (this.players[id]) {
-            this.players[id].stop();
+        const player = this.getPlayer(socket)
+        if (player) {
+            player.stop();
         }
     }
 
@@ -58,7 +66,7 @@ class Game {
         // Update players position
         Object.keys(this.sockets).forEach((playerId) => {
             const player = this.players[playerId];
-            player.update(dt);
+            player.update(dt, this.maze.map);
         });
 
         // Send state to client
@@ -78,7 +86,7 @@ class Game {
         return {
             t: Date.now(),
             me: player.getState(),
-            map: this.map.getState(),
+            map: this.maze.getState(),
             // players: Object.keys(this.players)
             //     .filter((playerId) => playerId !== player.id)
             //     .map((playerId) => this.players[playerId].getState())

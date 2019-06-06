@@ -1,8 +1,9 @@
 module.exports = Object.freeze({
-    MAP_SIZE: 26,
-    CELL_SIZE: 30,
-    PLAYER_SIZE: 20,
-    PLAYER_SPEED: 200,
+    MAP_SIZE: 11,
+    MAZE_SIZE: 11,
+    CELL_SIZE: 50,
+    PLAYER_SIZE: 30,
+    PLAYER_SPEED: 100,
     MESSAGE: {
         JOIN_GAME: 'join_game',
         GAME_UPDATE: 'update',

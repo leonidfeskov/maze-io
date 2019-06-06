@@ -3,6 +3,8 @@ import { downloadAssets } from './assets';
 import { startRendering, stopRendering } from './render';
 import { startCapturingInput, stopCapturingInput } from './input';
 
+import '../css/styles.css'
+
 Promise.all([
     connect(),
     downloadAssets(),

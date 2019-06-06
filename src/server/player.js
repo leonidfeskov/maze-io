@@ -1,11 +1,14 @@
-const { PLAYER_SPEED } = require('../shared/constants');
+const { PLAYER_SPEED, CELL_SIZE, PLAYER_SIZE } = require('../shared/constants');
+const { isIntersectBlock } = require('./utils');
+
+const PLAYER_OFFSET = (CELL_SIZE - PLAYER_SIZE) / 2;
 
 class Player {
-    constructor(id, name) {
+    constructor(id, name, x, y) {
         this.id = id;
         this.name = name;
-        this.x = 0;
-        this.y = 0;
+        this.x = x * CELL_SIZE + PLAYER_OFFSET;
+        this.y = y * CELL_SIZE + PLAYER_OFFSET;
         this.direction = Math.PI / 2;
         this.speed = PLAYER_SPEED;
         this.movement = false;
@@ -20,10 +23,14 @@ class Player {
         this.movement = false;
     }
 
-    update(dt) {
+    update(dt, map) {
         if (this.movement) {
-            this.x += dt * this.speed * Math.sin(this.direction);
-            this.y -= dt * this.speed * Math.cos(this.direction);
+            const x = this.x + Math.round(dt * this.speed * Math.sin(this.direction));
+            const y = this.y - Math.round(dt * this.speed * Math.cos(this.direction));
+            if (!isIntersectBlock({x, y}, map)) {
+                this.x = x;
+                this.y = y;
+            }
         }
     }
 
