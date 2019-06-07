@@ -1,5 +1,5 @@
 module.exports = Object.freeze({
-    MAP_SIZE: 5,
+    MAP_SIZE: 7,
     MAZE_SIZE: 11,
     CELL_SIZE: 50,
     PLAYER_SIZE: 30,

@@ -24,7 +24,7 @@ console.log(`Server listening on port ${port}`);
 const io = socketio(server);
 
 io.on('connection', (socket) => {
-    console.log('=== Player connected ===', socket.id);
+    console.log('=== CONNECTED ===', socket.id);
 
     socket.on(MESSAGE.JOIN_GAME, joinPlayer);
     socket.on(MESSAGE.PLAYER_MOVE, movePlayer);
@@ -34,9 +34,9 @@ io.on('connection', (socket) => {
 
 const game = new Game();
 
-function joinPlayer(userName) {
-    console.log('=== JOIN GAME ====', userName);
-    game.addPlayer(this, userName);
+function joinPlayer() {
+    console.log('=== JOIN GAME ====');
+    game.addPlayer(this);
 }
 
 function movePlayer(direction) {

@@ -6,11 +6,15 @@ import { startCapturingInput, stopCapturingInput } from './input';
 import '../css/styles.css'
 
 Promise.all([
-    connect(),
+    connect(onGameOver),
     downloadAssets(),
 ]).then(() => {
-    console.log('=== PLAY ===');
-    play('User');
+    play();
     startCapturingInput();
     startRendering();
 });
+
+function onGameOver() {
+    stopCapturingInput();
+    stopRendering();
+}

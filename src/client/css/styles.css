@@ -4,6 +4,7 @@ body {
     padding: 0;
 }
 
-.canvas {
+.map-wrapper {
     border: 3px solid #000;
+    overflow: hidden;
 }

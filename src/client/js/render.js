@@ -3,11 +3,19 @@ import { getAsset } from './assets';
 import { getCurrentState } from './state';
 
 
-const canvas = document.querySelector('.js-game');
+const mapWrapper = document.querySelector('.js-game');
+const canvas = document.querySelector('.js-game-canvas');
 const context = canvas.getContext('2d');
 
 const WIDTH = MAP_SIZE * CELL_SIZE;
 const HEIGHT = MAP_SIZE * CELL_SIZE;
+
+const mapWrapperSize = WIDTH - 2 * CELL_SIZE;
+
+mapWrapper.style.width = `${mapWrapperSize}px`;
+mapWrapper.style.height = `${mapWrapperSize}px`;
+canvas.style.marginLeft = `-${CELL_SIZE}px`;
+canvas.style.marginTop = `-${CELL_SIZE}px`;
 
 canvas.width = WIDTH;
 canvas.height = HEIGHT;

@@ -4,9 +4,8 @@ const { isIntersectBlock, getCoordinates } = require('./utils');
 const PLAYER_OFFSET = (CELL_SIZE - PLAYER_SIZE) / 2;
 
 class Player {
-    constructor(id, name, mapX, mapY) {
+    constructor(id, mapX, mapY) {
         this.id = id;
-        this.name = name;
         this.mapX = mapX;
         this.mapY = mapY;
         this.x = mapX * CELL_SIZE + PLAYER_OFFSET;

@@ -30,12 +30,12 @@ class Game {
         return this.players[id];
     }
 
-    addPlayer(socket, userName) {
+    addPlayer(socket) {
         const id = socket.id;
         this.sockets[id] = socket;
         // TODO сделать случайные координаты для игрока
         const center = Math.floor(MAZE_SIZE / 2);
-        this.players[id] = new Player(id, userName, center, center);
+        this.players[id] = new Player(id, center, center);
     }
 
     removePlayer(socket) {

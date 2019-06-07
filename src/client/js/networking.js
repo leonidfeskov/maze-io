@@ -5,6 +5,7 @@ import { MESSAGE } from '../../shared/constants';
 import { processGameUpdate } from './state';
 
 const socket = io(`ws://${window.location.host}`);
+
 const connectedPromise = new Promise((resolve) => {
     socket.on('connect', () => {
         console.log('=== Connected to server ===');
@@ -16,11 +17,15 @@ export const connect = (onGameOver) => {
     connectedPromise.then(() => {
         socket.on(MESSAGE.GAME_UPDATE, processGameUpdate);
         socket.on(MESSAGE.GAME_OVER, onGameOver);
+
+        socket.on('disconnect', () => {
+            console.log('=== Disconnected from server ===');
+        });
     })
 };
 
-export const play = (userName) => {
-    socket.emit(MESSAGE.JOIN_GAME, userName);
+export const play = () => {
+    socket.emit(MESSAGE.JOIN_GAME);
 };
 
 export const movePlayer = throttle(20, (direction) => {
