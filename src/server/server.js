@@ -40,12 +40,10 @@ function joinPlayer(userName) {
 }
 
 function movePlayer(direction) {
-    console.log('=== DIRECTION ===', direction);
     game.movePlayer(this, direction);
 }
 
 function stopPlayer() {
-    console.log('=== STOP ===');
     game.stopPlayer(this);
 }
 

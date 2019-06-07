@@ -19,10 +19,6 @@ class Maze {
         this.map = map;
     }
 
-    getState() {
-        return this.map;
-    }
-
     getVisibleMapForPlayer({mapX, mapY}) {
         const startIndexX = mapX - Math.floor(MAP_SIZE / 2);
         const startIndexY = mapY - Math.floor(MAP_SIZE / 2);
@@ -33,7 +29,11 @@ class Maze {
         for (let i = startIndexY; i < endIndexY; i++) {
             const row = [];
             for (let j = startIndexX; j < endIndexX; j++) {
-                row.push(this.map[i][j]);
+                if (this.map[i] !== undefined && this.map[i][j] !== undefined) {
+                    row.push(this.map[i][j]);
+                } else {
+                    row.push(0);
+                }
             }
             map.push(row);
         }

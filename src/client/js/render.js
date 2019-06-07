@@ -20,7 +20,7 @@ function render() {
     }
     const state = getCurrentState();
     renderBackground();
-    renderMap(state.map);
+    renderMap(state);
     renderMe(state.me);
     //renderPlayers(state.players);
     window.requestAnimationFrame(render);
@@ -31,12 +31,16 @@ function renderBackground() {
     context.fillRect(0, 0, WIDTH, HEIGHT);
 }
 
-function renderMap(map) {
+const playerSizeCompensation = (CELL_SIZE - PLAYER_SIZE) / 2;
+
+function renderMap({ map, me }) {
+    const playerOffsetX = me.x - me.mapX * CELL_SIZE - playerSizeCompensation;
+    const playerOffsetY = me.y - me.mapY * CELL_SIZE - playerSizeCompensation;
     context.fillStyle = 'white';
     map.forEach((row, y) => {
         row.forEach((cell, x) => {
             if (cell === 1) {
-                context.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                context.fillRect(x * CELL_SIZE - playerOffsetX, y * CELL_SIZE - playerOffsetY, CELL_SIZE, CELL_SIZE);
             }
         });
     });
