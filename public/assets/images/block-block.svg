@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16" enable-background="new 0 0 8 8" xml:space="preserve">
+	<rect width="16" height="16" fill="#adadad" />
+	<symbol id="block">
+		<polygon points="0,8 8,8 8,0" fill="#636363" />
+		<rect width="4" height="4" x="2" y="2" fill="#ffffff" />
+	</symbol>
+
+	<use xlink:href="#block" x="0" y="0"/>
+	<use xlink:href="#block" x="0" y="8"/>
+	<use xlink:href="#block" x="8" y="0"/>
+	<use xlink:href="#block" x="8" y="8"/>
+</svg>

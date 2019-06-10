@@ -4,13 +4,6 @@ const Maze = require('./maze');
 
 const FPS = 1000 / 60;
 
-const DIRECTION_MAPPING = {
-    'UP': 0,
-    'RIGHT': Math.PI / 2,
-    'DOWN': Math.PI,
-    'LEFT': -Math.PI / 2,
-};
-
 class Game {
     constructor() {
         this.sockets = {};
@@ -46,7 +39,7 @@ class Game {
         const player = this.getPlayer(socket);
 
         if (player) {
-            player.move(DIRECTION_MAPPING[direction]);
+            player.move(direction);
         }
     }
 

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16" enable-background="new 0 0 8 8" xml:space="preserve">
+	<rect width="16" height="16" fill="#9c4a00" />
+	<symbol id="block">
+		<rect width="8" height="1" x="0" y="0" fill="#6b0800" />
+		<rect width="8" height="1" x="0" y="4" fill="#6b0800" />
+		<rect width="1" height="5" x="5" y="0" fill="#6b0800" />
+		<rect width="1" height="4" x="1" y="4" fill="#6b0800" />
+
+		<rect width="8" height="1" x="0" y="3" fill="#636363" />
+		<rect width="8" height="1" x="0" y="7" fill="#636363" />
+		<rect width="1" height="4" x="4" y="0" fill="#636363" />
+		<rect width="1" height="5" x="0" y="3" fill="#636363" />
+	</symbol>
+
+	<use xlink:href="#block" x="0" y="0"/>
+	<use xlink:href="#block" x="0" y="8"/>
+	<use xlink:href="#block" x="8" y="0"/>
+	<use xlink:href="#block" x="8" y="8"/>
+</svg>

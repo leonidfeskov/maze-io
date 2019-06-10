@@ -3,6 +3,13 @@ const { isIntersectBlock, getCoordinates } = require('./utils');
 
 const PLAYER_OFFSET = (CELL_SIZE - PLAYER_SIZE) / 2;
 
+const DIRECTION_MAPPING = {
+    'UP': 0,
+    'RIGHT': Math.PI / 2,
+    'DOWN': Math.PI,
+    'LEFT': -Math.PI / 2,
+};
+
 class Player {
     constructor(id, mapX, mapY) {
         this.id = id;
@@ -10,7 +17,7 @@ class Player {
         this.mapY = mapY;
         this.x = mapX * CELL_SIZE + PLAYER_OFFSET;
         this.y = mapY * CELL_SIZE + PLAYER_OFFSET;
-        this.direction = Math.PI / 2;
+        this.direction = 'RIGHT';
         this.speed = PLAYER_SPEED;
         this.movement = false;
     }
@@ -25,9 +32,10 @@ class Player {
     }
 
     update(dt, map) {
+        const direction = DIRECTION_MAPPING[this.direction];
         if (this.movement) {
-            const x = this.x + Math.round(dt * this.speed * Math.sin(this.direction));
-            const y = this.y - Math.round(dt * this.speed * Math.cos(this.direction));
+            const x = this.x + Math.round(dt * this.speed * Math.sin(direction));
+            const y = this.y - Math.round(dt * this.speed * Math.cos(direction));
             if (!isIntersectBlock({x, y}, map)) {
                 this.x = x;
                 this.y = y;
@@ -44,6 +52,8 @@ class Player {
             y: this.y,
             mapX: this.mapX,
             mapY: this.mapY,
+            direction: this.direction,
+            move: this.movement,
         }
     }
 }

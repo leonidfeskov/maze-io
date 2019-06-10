@@ -1,6 +1,9 @@
 const ASSETS_NAMES = [
+    'mario-sprite.png',
     'player.svg',
-    'cell-wall.png'
+    'cell-wall.png',
+    'block-brick.svg',
+    'block-block.svg',
 ];
 
 const assets = {};

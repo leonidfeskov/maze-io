@@ -1,4 +1,4 @@
-import { CELL_SIZE, MAP_SIZE, PLAYER_SIZE, MAP_OBJECT } from '../../shared/constants';
+import { CELL_SIZE, MAP_SIZE, PLAYER_SIZE, MAP_OBJECT, PLAYER_SPEED } from '../../shared/constants';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
 
@@ -23,6 +23,15 @@ canvas.width = WIDTH;
 canvas.height = HEIGHT;
 
 let renderProcess = false;
+
+let tickNumber = 0;
+
+setInterval(() => {
+    tickNumber++;
+    if (tickNumber > 3) {
+        tickNumber = 0;
+    }
+}, PLAYER_SPEED);
 
 function render() {
     if (!renderProcess) {
@@ -57,7 +66,7 @@ function renderMap(map, movementOffset) {
         return;
     }
 
-    const wall = getAsset('cell-wall.png');
+    const wall = getAsset('block-block.svg');
 
     map.forEach((row, y) => {
         row.forEach((cell, x) => {
@@ -71,10 +80,10 @@ function renderMap(map, movementOffset) {
 function drawWall(image, x, y, offset) {
     context.drawImage(
         image,
-        0,
-        0,
-        200,
-        200,
+        // 0,
+        // 0,
+        // 200,
+        // 200,
         x * CELL_SIZE - offset.x,
         y * CELL_SIZE - offset.y,
         CELL_SIZE,
@@ -82,9 +91,30 @@ function drawWall(image, x, y, offset) {
     );
 }
 
-function renderMe() {
-    const playerImage = getAsset('player.svg');
-    context.drawImage(playerImage, PLAYER_COORD, PLAYER_COORD, PLAYER_SIZE, PLAYER_SIZE);
+function renderMe(me) {
+    const { direction, move } = me;
+    const playerImage = getAsset('mario-sprite.png');
+
+    let sy = 0;
+    if (direction === 'RIGHT') {
+        sy = 80;
+    } else if (direction === 'UP') {
+        sy = 160;
+    } else if (direction === 'LEFT') {
+        sy = 240;
+    }
+
+    context.drawImage(
+        playerImage,
+        move ? tickNumber * 80 : 0,
+        sy,
+        80,
+        80,
+        PLAYER_COORD,
+        PLAYER_COORD,
+        PLAYER_SIZE,
+        PLAYER_SIZE
+    );
 }
 
 function renderPlayers(players, me, movementOffset) {

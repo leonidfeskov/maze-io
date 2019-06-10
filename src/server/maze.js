@@ -19,7 +19,6 @@ const testMap = [
 class Maze {
     constructor() {
         this.map = generateMaze(MAZE_SIZE, MAZE_SIZE);
-        console.table(this.map);
     }
 
     getRandomEmptyCell() {
