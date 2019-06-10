@@ -1,4 +1,4 @@
-const { MESSAGE, MAZE_SIZE } = require('../shared/constants');
+const { MESSAGE } = require('../shared/constants');
 const Player = require('./player');
 const Maze = require('./maze');
 
@@ -32,9 +32,8 @@ class Game {
     addPlayer(socket) {
         const id = socket.id;
         this.sockets[id] = socket;
-        // TODO сделать случайные координаты для игрока
-        const center = Math.floor(MAZE_SIZE / 2);
-        this.players[id] = new Player(id, center, center);
+        const { x, y } = this.maze.getRandomEmptyCell();
+        this.players[id] = new Player(id, x, y);
     }
 
     removePlayer(socket) {

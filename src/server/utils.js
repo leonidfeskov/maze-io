@@ -1,5 +1,9 @@
 const { CELL_SIZE, PLAYER_SIZE } = require('../shared/constants');
 
+const random = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 function getCoordinates(x, y) {
     return {
         x: Math.floor(x / CELL_SIZE),
@@ -23,6 +27,7 @@ function isIntersectBlock(player, map) {
 }
 
 module.exports = {
+    random,
     getCoordinates,
     getCell,
     isIntersectBlock,

@@ -1,6 +1,8 @@
-const { MAP_SIZE } = require('../shared/constants');
+const { MAP_SIZE, MAZE_SIZE, MAP_OBJECT } = require('../shared/constants');
+const { random } = require('./utils');
+const generateMaze  = require('./generateMaze');
 
-const map = [
+const testMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
@@ -16,7 +18,17 @@ const map = [
 
 class Maze {
     constructor() {
-        this.map = map;
+        this.map = generateMaze(MAZE_SIZE, MAZE_SIZE);
+        console.table(this.map);
+    }
+
+    getRandomEmptyCell() {
+        const randomCell = {};
+        do {
+            randomCell.x = random(1, MAZE_SIZE - 2);
+            randomCell.y = random(1, MAZE_SIZE - 2);
+        } while (this.map[randomCell.y][randomCell.x] !== MAP_OBJECT.EMPTY);
+        return randomCell;
     }
 
     getVisibleMapForPlayer({mapX, mapY}) {
