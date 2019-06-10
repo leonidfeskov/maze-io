@@ -93,6 +93,24 @@ function drawWall(image, x, y, offset) {
 
 function renderMe(me) {
     const { direction, move } = me;
+    renderPlayer({ direction, move, x: PLAYER_COORD, y: PLAYER_COORD })
+}
+
+function renderPlayers(players, me, movementOffset) {
+    // расчитываем координаты других игроков относительно себя
+    const offset = {
+        x: (me.mapX - CENTER_MAP_INDEX) * CELL_SIZE + movementOffset.x,
+        y: (me.mapY - CENTER_MAP_INDEX) * CELL_SIZE + movementOffset.y,
+    };
+    players.forEach((player) => {
+        const { direction, move } = player;
+        const x = player.x - offset.x;
+        const y = player.y - offset.y;
+        renderPlayer({ direction, move, x, y })
+    });
+}
+
+function renderPlayer({ direction, move, x, y }) {
     const playerImage = getAsset('mario-sprite.png');
 
     let sy = 0;
@@ -110,26 +128,11 @@ function renderMe(me) {
         sy,
         80,
         80,
-        PLAYER_COORD,
-        PLAYER_COORD,
+        x,
+        y,
         PLAYER_SIZE,
         PLAYER_SIZE
     );
-}
-
-function renderPlayers(players, me, movementOffset) {
-    // расчитываем координаты других игроков относительно себя
-    const offset = {
-        x: (me.mapX - CENTER_MAP_INDEX) * CELL_SIZE + movementOffset.x,
-        y: (me.mapY - CENTER_MAP_INDEX) * CELL_SIZE + movementOffset.y,
-    };
-    players.forEach((player) => {
-        const x = player.x - offset.x;
-        const y = player.y - offset.y;
-
-        const playerImage = getAsset('player.svg');
-        context.drawImage(playerImage, x, y, PLAYER_SIZE, PLAYER_SIZE);
-    });
 }
 
 export const startRendering = () => {
