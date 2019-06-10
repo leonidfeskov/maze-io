@@ -1,5 +1,6 @@
 const ASSETS_NAMES = [
     'player.svg',
+    'cell-wall.png'
 ];
 
 const assets = {};

@@ -3,8 +3,8 @@ let lastGameUpdate = {
         x: 0,
         y: 0,
     },
-    map: [[]],
-    // players: [],
+    map: null,
+    players: [],
 };
 
 export function processGameUpdate(update) {
