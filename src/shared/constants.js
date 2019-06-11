@@ -8,6 +8,7 @@ module.exports = Object.freeze({
     CELL_SIZE: 100,
     PLAYER_SIZE: 80,
     PLAYER_SPEED: 200,
+    PLAYER_HP: 5,
     MESSAGE: {
         JOIN_GAME: 'join_game',
         GAME_UPDATE: 'update',

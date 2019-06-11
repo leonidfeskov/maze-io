@@ -59,6 +59,7 @@ function renderObjects(state) {
     renderMap(map, movementOffset);
     renderMe(me);
     renderPlayers(players, me, movementOffset);
+    renderPanel(me);
 }
 
 function renderMap(map, movementOffset) {
@@ -133,6 +134,29 @@ function renderPlayer({ direction, move, x, y }) {
         PLAYER_SIZE,
         PLAYER_SIZE
     );
+}
+
+const panelX = 10 + CELL_SIZE;
+const panelY = 10 + CELL_SIZE;
+const hpWidth = CELL_SIZE * 2;
+const hpHeight = CELL_SIZE / 4;
+
+
+function renderPanel({ maxHp, hp }) {
+    context.strokeStyle = 'white';
+    context.strokeWidth = 2;
+    context.fillStyle = 'gray';
+    context.fillRect(panelX, panelY, hpWidth, hpHeight);
+    context.fillStyle = 'red';
+    context.fillRect(panelX, panelY, (hp * hpWidth) / maxHp, hpHeight);
+    context.rect(panelX, panelY, hpWidth, hpHeight);
+    context.stroke();
+
+    context.font = '18px serif';
+    context.textBaseline = 'middle';
+    context.textAlign = 'center';
+    context.fillStyle = 'white';
+    context.fillText(`${hp} / ${maxHp}`, hpWidth / 2 + panelX, hpHeight / 2 +  + panelY);
 }
 
 export const startRendering = () => {

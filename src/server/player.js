@@ -1,4 +1,4 @@
-const { PLAYER_SPEED, CELL_SIZE, PLAYER_SIZE } = require('../shared/constants');
+const { PLAYER_SPEED, PLAYER_HP, PLAYER_SIZE, CELL_SIZE } = require('../shared/constants');
 const { isIntersectBlock, getCoordinates } = require('./utils');
 
 const PLAYER_OFFSET = (CELL_SIZE - PLAYER_SIZE) / 2;
@@ -20,6 +20,8 @@ class Player {
         this.direction = 'RIGHT';
         this.speed = PLAYER_SPEED;
         this.movement = false;
+        this.maxHp = PLAYER_HP;
+        this.hp = PLAYER_HP;
     }
 
     move(direction) {
@@ -54,6 +56,8 @@ class Player {
             mapY: this.mapY,
             direction: this.direction,
             move: this.movement,
+            maxHp: this.maxHp,
+            hp: this.hp,
         }
     }
 }
