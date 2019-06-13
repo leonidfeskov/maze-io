@@ -29,6 +29,7 @@ io.on('connection', (socket) => {
     socket.on(MESSAGE.JOIN_GAME, joinPlayer);
     socket.on(MESSAGE.PLAYER_MOVE, movePlayer);
     socket.on(MESSAGE.PLAYER_STOP, stopPlayer);
+    socket.on(MESSAGE.PLAYER_HIT, makeHitPlayer);
     socket.on('disconnect', onDisconnect);
 });
 
@@ -45,6 +46,10 @@ function movePlayer(direction) {
 
 function stopPlayer() {
     game.stopPlayer(this);
+}
+
+function makeHitPlayer() {
+    game.makeHitPlayer(this);
 }
 
 function onDisconnect() {

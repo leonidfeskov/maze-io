@@ -35,3 +35,7 @@ export const movePlayer = throttle(20, (direction) => {
 export const stopPlayer = () => {
     socket.emit(MESSAGE.PLAYER_STOP);
 };
+
+export const makeHitPlayer = () => {
+    socket.emit(MESSAGE.PLAYER_HIT);
+};

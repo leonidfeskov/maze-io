@@ -14,6 +14,7 @@ module.exports = Object.freeze({
         GAME_UPDATE: 'update',
         PLAYER_MOVE: 'move',
         PLAYER_STOP: 'stop',
+        PLAYER_HIT: 'hit',
         GAME_OVER: 'dead',
     },
 });

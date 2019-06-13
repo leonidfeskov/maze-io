@@ -20,6 +20,7 @@ class Player {
         this.direction = 'RIGHT';
         this.speed = PLAYER_SPEED;
         this.movement = false;
+        this.hit = false;
         this.maxHp = PLAYER_HP;
         this.hp = PLAYER_HP;
     }
@@ -31,6 +32,15 @@ class Player {
 
     stop() {
         this.movement = false;
+    }
+
+    makeHit() {
+        if (!this.hit) {
+            this.hit = true;
+            setTimeout(() => {
+                this.hit = false;
+            }, 500)
+        }
     }
 
     calculatePosition(dt) {
@@ -57,6 +67,7 @@ class Player {
             mapY: this.mapY,
             direction: this.direction,
             move: this.movement,
+            hit: this.hit,
             maxHp: this.maxHp,
             hp: this.hp,
         }

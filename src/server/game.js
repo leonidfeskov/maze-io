@@ -38,7 +38,6 @@ class Game {
 
     movePlayer(socket, direction) {
         const player = this.getPlayer(socket);
-
         if (player) {
             player.move(direction);
         }
@@ -48,6 +47,13 @@ class Game {
         const player = this.getPlayer(socket);
         if (player) {
             player.stop();
+        }
+    }
+
+    makeHitPlayer(socket) {
+        const player = this.getPlayer(socket);
+        if (player) {
+            player.makeHit();
         }
     }
 

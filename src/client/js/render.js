@@ -93,8 +93,8 @@ function drawWall(image, x, y, offset) {
 }
 
 function renderMe(me) {
-    const { direction, move } = me;
-    renderPlayer({ direction, move, x: PLAYER_COORD, y: PLAYER_COORD })
+    const { direction, move, hit } = me;
+    renderPlayer({ direction, move, x: PLAYER_COORD, y: PLAYER_COORD, hit })
 }
 
 function renderPlayers(players, me, movementOffset) {
@@ -104,14 +104,14 @@ function renderPlayers(players, me, movementOffset) {
         y: (me.mapY - CENTER_MAP_INDEX) * CELL_SIZE + movementOffset.y,
     };
     players.forEach((player) => {
-        const { direction, move } = player;
+        const { direction, move, hit } = player;
         const x = player.x - offset.x;
         const y = player.y - offset.y;
-        renderPlayer({ direction, move, x, y })
+        renderPlayer({ direction, move, x, y, hit })
     });
 }
 
-function renderPlayer({ direction, move, x, y }) {
+function renderPlayer({ direction, move, x, y, hit }) {
     const playerImage = getAsset('mario-sprite.png');
 
     let sy = 0;
@@ -121,6 +121,12 @@ function renderPlayer({ direction, move, x, y }) {
         sy = 160;
     } else if (direction === 'LEFT') {
         sy = 240;
+    }
+
+    if (hit) {
+        console.log('HIT')
+        context.fillStyle = 'red';
+        context.fillRect(x, y, PLAYER_SIZE, PLAYER_SIZE);
     }
 
     context.drawImage(
