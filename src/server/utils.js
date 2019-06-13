@@ -18,11 +18,30 @@ function getCell(map, x, y) {
 
 function isIntersectRect(rectA, rectB) {
     return !(
-        rectB.x > rectA.x + rectA.size + 1 ||
-        rectA.x > rectB.x + rectB.size + 1 ||
-        rectB.y > rectA.y + rectA.size + 1 ||
-        rectA.y > rectB.y + rectB.size + 1
+        rectB.x > rectA.x + rectA.size ||
+        rectA.x > rectB.x + rectB.size ||
+        rectB.y > rectA.y + rectA.size ||
+        rectA.y > rectB.y + rectB.size
     );
+}
+
+function isIntersectWithPlayer(me, player) {
+    return isIntersectRect(
+        {x: me.x, y: me.y, size: PLAYER_SIZE},
+        {x: player.x, y: player.y, size: PLAYER_SIZE}
+    );
+}
+
+function isIntersectWithPlayers(me, players) {
+    return Object.keys(players)
+        .map((playerId) => {
+            const player = players[playerId];
+            if (player.id === me.id) {
+                return false;
+            }
+            return isIntersectWithPlayer(me, player);
+        })
+        .some(Boolean);
 }
 
 function isIntersectBlock(player, map) {
@@ -38,6 +57,6 @@ function isIntersectBlock(player, map) {
 module.exports = {
     random,
     getCoordinates,
-    isIntersectRect,
+    isIntersectWithPlayers,
     isIntersectBlock,
 };

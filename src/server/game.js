@@ -1,6 +1,7 @@
 const { MESSAGE } = require('../shared/constants');
 const Player = require('./player');
 const Maze = require('./maze');
+const { isIntersectBlock, isIntersectWithPlayers } = require('./utils');
 
 const FPS = 1000 / 60;
 
@@ -50,18 +51,29 @@ class Game {
         }
     }
 
+    updatePlayers(dt) {
+        Object.keys(this.sockets).forEach((playerId) => {
+            const player = this.players[playerId];
+            if (player.movement) {
+                const newPosition = player.calculatePosition(dt);
+                newPosition.id = playerId;
+                if (
+                    !isIntersectBlock(newPosition, this.maze.map) &&
+                    !isIntersectWithPlayers(newPosition, this.players)
+                ) {
+                    player.update(newPosition);
+                }
+            }
+        });
+    }
+
     update() {
         const now = Date.now();
         const dt = (now - this.lastUpdateTime) / 1000;
         this.lastUpdateTime = now;
 
-        // Update players position
-        Object.keys(this.sockets).forEach((playerId) => {
-            const player = this.players[playerId];
-            player.update(dt, this.maze.map, this.players);
-        });
+        this.updatePlayers(dt);
 
-        // Send state to client
         if (this.shouldSendUpdate) {
             Object.keys(this.sockets).forEach((playerId) => {
                 const socket = this.sockets[playerId];
