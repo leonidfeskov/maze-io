@@ -1,6 +1,6 @@
 module.exports = Object.freeze({
     MAP_SIZE: 9,
-    MAZE_SIZE: 21,
+    MAZE_SIZE: 11,
     MAP_OBJECT: {
         EMPTY: 0,
         WALL: 1,

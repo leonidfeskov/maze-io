@@ -58,7 +58,7 @@ class Game {
         // Update players position
         Object.keys(this.sockets).forEach((playerId) => {
             const player = this.players[playerId];
-            player.update(dt, this.maze.map);
+            player.update(dt, this.maze.map, this.players);
         });
 
         // Send state to client
