@@ -1,7 +1,7 @@
 const { MESSAGE } = require('../shared/constants');
 const Player = require('./player');
 const Maze = require('./maze');
-const { isIntersectBlock, isIntersectWithPlayers } = require('./utils');
+const { isIntersectBlock, isIntersectWithPlayers, hitByPlayers } = require('./utils');
 
 const FPS = 1000 / 60;
 
@@ -54,6 +54,11 @@ class Game {
         const player = this.getPlayer(socket);
         if (player) {
             player.makeHit();
+            const damageRect = player.getDamageRect();
+            const playerIdsWhoGetDamage = hitByPlayers(damageRect, this.players);
+            playerIdsWhoGetDamage.forEach((id) => {
+                this.players[id].getDamage();
+            });
         }
     }
 

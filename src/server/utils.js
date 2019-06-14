@@ -18,17 +18,29 @@ function getCell(map, x, y) {
 
 function isIntersectRect(rectA, rectB) {
     return !(
-        rectB.x > rectA.x + rectA.size ||
-        rectA.x > rectB.x + rectB.size ||
-        rectB.y > rectA.y + rectA.size ||
-        rectA.y > rectB.y + rectB.size
+        rectB.x > rectA.x + rectA.width ||
+        rectA.x > rectB.x + rectB.width ||
+        rectB.y > rectA.y + rectA.height ||
+        rectA.y > rectB.y + rectB.height
     );
+}
+
+function hitByPlayers(damageRect, players) {
+    return Object.keys(players)
+        .map((playerId) => {
+            const player = players[playerId];
+            if (isIntersectRect(damageRect, {...player, width: PLAYER_SIZE, height: PLAYER_SIZE})) {
+                return playerId;
+            }
+            return null
+        })
+        .filter(Boolean);
 }
 
 function isIntersectWithPlayer(me, player) {
     return isIntersectRect(
-        {x: me.x, y: me.y, size: PLAYER_SIZE},
-        {x: player.x, y: player.y, size: PLAYER_SIZE}
+        {x: me.x, y: me.y, width: PLAYER_SIZE, height: PLAYER_SIZE},
+        {x: player.x, y: player.y, width: PLAYER_SIZE, height: PLAYER_SIZE}
     );
 }
 
@@ -59,4 +71,5 @@ module.exports = {
     getCoordinates,
     isIntersectWithPlayers,
     isIntersectBlock,
+    hitByPlayers,
 };

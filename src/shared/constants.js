@@ -6,9 +6,11 @@ module.exports = Object.freeze({
         WALL: 1,
     },
     CELL_SIZE: 100,
+    DAMAGE_DISTANCE: 40,
     PLAYER_SIZE: 80,
     PLAYER_SPEED: 200,
     PLAYER_HP: 5,
+    PLAYER_HIT_COOLDOWN: 500,
     MESSAGE: {
         JOIN_GAME: 'join_game',
         GAME_UPDATE: 'update',

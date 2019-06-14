@@ -1,4 +1,4 @@
-const { PLAYER_SPEED, PLAYER_HP, PLAYER_SIZE, CELL_SIZE } = require('../shared/constants');
+const { PLAYER_SPEED, PLAYER_HP, PLAYER_SIZE, PLAYER_HIT_COOLDOWN, CELL_SIZE, DAMAGE_DISTANCE } = require('../shared/constants');
 const { getCoordinates } = require('./utils');
 
 const PLAYER_OFFSET = (CELL_SIZE - PLAYER_SIZE) / 2;
@@ -8,6 +8,13 @@ const DIRECTION_MAPPING = {
     'RIGHT': Math.PI / 2,
     'DOWN': Math.PI,
     'LEFT': -Math.PI / 2,
+};
+
+const setValueForShortTime = (player, value) => {
+    player[value] = true;
+    setTimeout(() => {
+        player[value] = false;
+    }, 100)
 };
 
 class Player {
@@ -20,9 +27,11 @@ class Player {
         this.direction = 'RIGHT';
         this.speed = PLAYER_SPEED;
         this.movement = false;
-        this.hit = false;
+        this.hit = null;
+        this.hitCooldown = false;
         this.maxHp = PLAYER_HP;
         this.hp = PLAYER_HP;
+        this.injured = false;
     }
 
     move(direction) {
@@ -35,11 +44,54 @@ class Player {
     }
 
     makeHit() {
-        if (!this.hit) {
-            this.hit = true;
+        if (!this.hitCooldown) {
+            this.hitCooldown = true;
             setTimeout(() => {
-                this.hit = false;
-            }, 500)
+                this.hitCooldown = false;
+            }, PLAYER_HIT_COOLDOWN);
+
+            setValueForShortTime(this, 'hit');
+        }
+    }
+
+    getDamageRect() {
+        const rect = {};
+        switch (this.direction) {
+            case 'RIGHT':
+                rect.x = this.x + PLAYER_SIZE + 1;
+                rect.y = this.y;
+                rect.width = DAMAGE_DISTANCE;
+                rect.height = PLAYER_SIZE;
+                break;
+            case 'LEFT':
+                rect.x = this.x - DAMAGE_DISTANCE - 1;
+                rect.y = this.y;
+                rect.width = DAMAGE_DISTANCE;
+                rect.height = PLAYER_SIZE;
+                break;
+            case 'DOWN':
+                rect.x = this.x;
+                rect.y = this.y + PLAYER_SIZE + 1;
+                rect.width = PLAYER_SIZE;
+                rect.height = DAMAGE_DISTANCE;
+                break;
+            case 'UP':
+                rect.x = this.x;
+                rect.y = this.y - DAMAGE_DISTANCE - 1;
+                rect.width = PLAYER_SIZE;
+                rect.height = DAMAGE_DISTANCE;
+                break;
+            default:
+                break;
+        }
+        return rect;
+    }
+
+    getDamage() {
+        this.hp--;
+        setValueForShortTime(this,'injured');
+        if (this.hp < 0) {
+            this.hp = 0;
         }
     }
 
@@ -70,6 +122,7 @@ class Player {
             hit: this.hit,
             maxHp: this.maxHp,
             hp: this.hp,
+            injured: this.injured,
         }
     }
 }
