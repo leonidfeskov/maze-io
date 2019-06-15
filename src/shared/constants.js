@@ -14,8 +14,11 @@ module.exports = Object.freeze({
     ITEM_SIZE: 80,
     DAMAGE_DISTANCE: 40,
     PLAYER_SIZE: 80,
-    PLAYER_SPEED: 200,
     PLAYER_HP: 5,
+    PLAYER_ATTACK: 1,
+    PLAYER_MAX_SPEED: 300,
+    PLAYER_MIN_SPEED: 100,
+    PLAYER_MAX_LEVEL: 10,
     PLAYER_HIT_COOLDOWN: 500,
     MESSAGE: {
         DISCONNECT: 'disconnect',

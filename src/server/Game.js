@@ -96,6 +96,7 @@ class Game {
                     const x = coin.x + (ITEM_SIZE / 2);
                     const y = coin.y + (ITEM_SIZE / 2);
                     if (isIntersectWithPoint({x, y}, newPosition)) {
+                        player.takeCoin();
                         this.maze.map[coin.mapY][coin.mapX] = MAP_OBJECT.EMPTY;
                         delete this.coins[coinId];
                         this.spawnCoin(0);

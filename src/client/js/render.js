@@ -1,4 +1,4 @@
-import { CELL_SIZE, MAP_SIZE, PLAYER_SIZE, MAP_OBJECT, ITEM, ITEM_SIZE, PLAYER_SPEED } from '../../shared/constants';
+import { CELL_SIZE, MAP_SIZE, PLAYER_SIZE, MAP_OBJECT, ITEM, ITEM_SIZE } from '../../shared/constants';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
 
@@ -32,7 +32,7 @@ setInterval(() => {
     if (tickNumber > 3) {
         tickNumber = 0;
     }
-}, PLAYER_SPEED);
+}, 200);
 
 function render() {
     if (!renderProcess) {
@@ -171,24 +171,18 @@ function renderGetDamage(x, y) {
 
 const panelX = 10 + CELL_SIZE;
 const panelY = 10 + CELL_SIZE;
-const hpWidth = CELL_SIZE * 2;
-const hpHeight = CELL_SIZE / 4;
 
-function renderPanel({ maxHp, hp }) {
-    context.strokeStyle = 'white';
-    context.strokeWidth = 2;
-    context.fillStyle = 'gray';
-    context.fillRect(panelX, panelY, hpWidth, hpHeight);
-    context.fillStyle = 'red';
-    context.fillRect(panelX, panelY, (hp * hpWidth) / maxHp, hpHeight);
-    context.rect(panelX, panelY, hpWidth, hpHeight);
-    context.stroke();
+function renderPanel({ level, maxHp, hp, attack, speed, coins }) {
+    context.fillStyle = 'white';
+    context.fillRect(panelX, panelY, CELL_SIZE * (MAP_SIZE - 2) - 20, 30);
 
     context.font = '18px serif';
-    context.textBaseline = 'middle';
-    context.textAlign = 'center';
-    context.fillStyle = 'white';
-    context.fillText(`${hp} / ${maxHp}`, hpWidth / 2 + panelX, hpHeight / 2 +  + panelY);
+    context.fillStyle = 'black';
+    // context.textBaseline = 'middle';
+    // context.textAlign = 'center';
+    // context.fillText(`${hp} / ${maxHp}`, hpWidth / 2 + panelX, hpHeight / 2 + panelY);
+
+    context.fillText(`level: ${level}, maxHp: ${maxHp}, hp: ${hp}, attack: ${attack}, speed: ${speed}, coins: ${coins}`, panelX + 10, panelY + 20);
 }
 
 export const startRendering = () => {

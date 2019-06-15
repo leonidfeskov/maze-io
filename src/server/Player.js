@@ -1,4 +1,4 @@
-const { PLAYER_SPEED, PLAYER_HP, PLAYER_SIZE, PLAYER_HIT_COOLDOWN, CELL_SIZE, DAMAGE_DISTANCE } = require('../shared/constants');
+const { PLAYER_MAX_LEVEL, PLAYER_MIN_SPEED, PLAYER_MAX_SPEED, PLAYER_HP, PLAYER_ATTACK, PLAYER_SIZE, PLAYER_HIT_COOLDOWN, CELL_SIZE, DAMAGE_DISTANCE } = require('../shared/constants');
 const { getCoordinates } = require('./utils');
 
 const PLAYER_OFFSET = (CELL_SIZE - PLAYER_SIZE) / 2;
@@ -25,13 +25,33 @@ class Player {
         this.x = mapX * CELL_SIZE + PLAYER_OFFSET;
         this.y = mapY * CELL_SIZE + PLAYER_OFFSET;
         this.direction = 'RIGHT';
-        this.speed = PLAYER_SPEED;
+
+        this.level = 1;
+
+        this.maxHp = PLAYER_HP;
+        this.attack = PLAYER_ATTACK;
+        this.speed = PLAYER_MAX_SPEED;
+
         this.movement = false;
         this.hit = null;
         this.hitCooldown = false;
-        this.maxHp = PLAYER_HP;
+
         this.hp = PLAYER_HP;
         this.injured = false;
+
+        this.coins = 0;
+    }
+
+    calculateStats() {
+        const prevLevel = this.level;
+        this.level = Math.min(PLAYER_MAX_LEVEL, Math.floor(Math.log2(this.coins)) + 1);
+        this.maxHp = PLAYER_MAX_LEVEL - this.level + 1;
+        this.attack = this.level;
+        this.speed = Math.max(PLAYER_MIN_SPEED, PLAYER_MAX_SPEED - (this.level - 1) * 20);
+
+        if (prevLevel !== this.level) {
+            this.hp = this.maxHp;
+        }
     }
 
     move(direction) {
@@ -41,6 +61,11 @@ class Player {
 
     stop() {
         this.movement = false;
+    }
+
+    takeCoin() {
+        this.coins++;
+        this.calculateStats();
     }
 
     makeHit() {
@@ -120,9 +145,15 @@ class Player {
             direction: this.direction,
             move: this.movement,
             hit: this.hit,
-            maxHp: this.maxHp,
-            hp: this.hp,
             injured: this.injured,
+
+            level: this.level,
+            maxHp: this.maxHp,
+            attack: this.attack,
+            hp: this.hp,
+            speed: this.speed,
+
+            coins: this.coins,
         }
     }
 }
