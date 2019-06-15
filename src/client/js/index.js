@@ -17,4 +17,5 @@ Promise.all([
 function onGameOver() {
     stopCapturingInput();
     stopRendering();
+    alert('GAME OVER');
 }

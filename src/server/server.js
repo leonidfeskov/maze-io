@@ -37,7 +37,7 @@ const game = new Game();
 
 function joinPlayer() {
     console.log('=== JOIN GAME ====');
-    game.addPlayer(this);
+    game.connectPlayer(this);
 }
 
 function movePlayer(direction) {
@@ -54,7 +54,7 @@ function makeHitPlayer() {
 
 function onDisconnect() {
     console.log('=== DISCONNECT ===');
-    game.removePlayer(this);
+    game.disconnectPlayer(this);
 }
 
 

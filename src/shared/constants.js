@@ -12,6 +12,7 @@ module.exports = Object.freeze({
     PLAYER_HP: 5,
     PLAYER_HIT_COOLDOWN: 500,
     MESSAGE: {
+        DISCONNECT: 'disconnect',
         JOIN_GAME: 'join_game',
         GAME_UPDATE: 'update',
         PLAYER_MOVE: 'move',

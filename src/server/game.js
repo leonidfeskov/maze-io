@@ -23,15 +23,18 @@ class Game {
         return this.players[id];
     }
 
-    addPlayer(socket) {
+    connectPlayer(socket) {
         const id = socket.id;
         this.sockets[id] = socket;
         const { x, y } = this.maze.getRandomEmptyCell();
         this.players[id] = new Player(id, x, y);
     }
 
-    removePlayer(socket) {
-        const id = socket.id;
+    disconnectPlayer(socket) {
+        this.removePlayer(socket.id)
+    }
+
+    removePlayer(id) {
         delete this.sockets[id];
         delete this.players[id];
     }
@@ -58,6 +61,7 @@ class Game {
             const playerIdsWhoGetDamage = hitByPlayers(damageRect, this.players);
             playerIdsWhoGetDamage.forEach((id) => {
                 this.players[id].getDamage();
+                this.removePlayerIfDead(id)
             });
         }
     }
@@ -76,6 +80,14 @@ class Game {
                 }
             }
         });
+    }
+
+    removePlayerIfDead(playerId) {
+        const player = this.players[playerId];
+        if (player.hp <= 0) {
+            this.sockets[playerId].emit(MESSAGE.GAME_OVER);
+            this.removePlayer(playerId);
+        }
     }
 
     update() {
