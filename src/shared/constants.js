@@ -1,10 +1,10 @@
-const mazeSize = 11;
-const cellSize = 100;
+const mazeSize = 51;
+const cellSize = 64;
 const unitSize = cellSize - 20;
 
 module.exports = Object.freeze({
     MAZE_SIZE: mazeSize,
-    MAP_SIZE: 9,
+    MAP_SIZE: 11,
     CELL_SIZE: cellSize,
     MAP_OBJECT: {
         EMPTY: 0,
@@ -18,10 +18,9 @@ module.exports = Object.freeze({
     ITEM_SIZE: unitSize,
     PLAYER: {
         SIZE: unitSize,
-        HP: 10,
         ATTACK: 1,
-        MAX_SPEED: 300,
-        MIN_SPEED: 100,
+        MAX_SPEED: cellSize * 3,
+        MIN_SPEED: cellSize,
         MAX_LEVEL: 10,
         HIT_COOLDOWN: 500,
         DAMAGE_DISTANCE: unitSize / 2,

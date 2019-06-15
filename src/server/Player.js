@@ -28,7 +28,8 @@ class Player {
 
         this.level = 1;
 
-        this.maxHp = PLAYER.HP;
+        this.maxHp = PLAYER.MAX_LEVEL;
+        this.hp = this.maxHp;
         this.attack = PLAYER.ATTACK;
         this.speed = PLAYER.MAX_SPEED;
 
@@ -36,7 +37,6 @@ class Player {
         this.hit = null;
         this.hitCooldown = false;
 
-        this.hp = PLAYER.HP;
         this.injured = false;
 
         this.coins = 0;
@@ -47,7 +47,8 @@ class Player {
         this.level = Math.min(PLAYER.MAX_LEVEL, Math.floor(Math.log2(this.coins)) + 1);
         this.maxHp = PLAYER.MAX_LEVEL - this.level + 1;
         this.attack = this.level;
-        this.speed = Math.max(PLAYER.MIN_SPEED, PLAYER.MAX_SPEED - (this.level - 1) * 20);
+        const speedDelta = Math.round((PLAYER.MAX_SPEED - PLAYER.MIN_SPEED) / PLAYER.MAX_LEVEL);
+        this.speed = Math.max(PLAYER.MIN_SPEED, PLAYER.MAX_SPEED - (this.level - 1) * speedDelta);
 
         if (prevLevel !== this.level) {
             this.hp = this.maxHp;
@@ -112,8 +113,8 @@ class Player {
         return rect;
     }
 
-    getDamage() {
-        this.hp--;
+    getDamage(damage) {
+        this.hp -= damage;
         setValueForShortTime(this,'injured');
         if (this.hp < 0) {
             this.hp = 0;

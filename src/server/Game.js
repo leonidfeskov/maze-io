@@ -73,7 +73,7 @@ class Game {
             const damageRect = player.getDamageRect();
             const playerIdsWhoGetDamage = hitByPlayers(damageRect, this.players);
             playerIdsWhoGetDamage.forEach((id) => {
-                this.players[id].getDamage();
+                this.players[id].getDamage(player.attack);
                 this.removePlayerIfDead(id)
             });
         }
