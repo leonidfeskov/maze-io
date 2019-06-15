@@ -1,7 +1,7 @@
-const { PLAYER_MAX_LEVEL, PLAYER_MIN_SPEED, PLAYER_MAX_SPEED, PLAYER_HP, PLAYER_ATTACK, PLAYER_SIZE, PLAYER_HIT_COOLDOWN, CELL_SIZE, DAMAGE_DISTANCE } = require('../shared/constants');
+const { PLAYER, CELL_SIZE } = require('../shared/constants');
 const { getCoordinates } = require('./utils');
 
-const PLAYER_OFFSET = (CELL_SIZE - PLAYER_SIZE) / 2;
+const PLAYER_OFFSET = (CELL_SIZE - PLAYER.SIZE) / 2;
 
 const DIRECTION_MAPPING = {
     'UP': 0,
@@ -28,15 +28,15 @@ class Player {
 
         this.level = 1;
 
-        this.maxHp = PLAYER_HP;
-        this.attack = PLAYER_ATTACK;
-        this.speed = PLAYER_MAX_SPEED;
+        this.maxHp = PLAYER.HP;
+        this.attack = PLAYER.ATTACK;
+        this.speed = PLAYER.MAX_SPEED;
 
         this.movement = false;
         this.hit = null;
         this.hitCooldown = false;
 
-        this.hp = PLAYER_HP;
+        this.hp = PLAYER.HP;
         this.injured = false;
 
         this.coins = 0;
@@ -44,10 +44,10 @@ class Player {
 
     calculateStats() {
         const prevLevel = this.level;
-        this.level = Math.min(PLAYER_MAX_LEVEL, Math.floor(Math.log2(this.coins)) + 1);
-        this.maxHp = PLAYER_MAX_LEVEL - this.level + 1;
+        this.level = Math.min(PLAYER.MAX_LEVEL, Math.floor(Math.log2(this.coins)) + 1);
+        this.maxHp = PLAYER.MAX_LEVEL - this.level + 1;
         this.attack = this.level;
-        this.speed = Math.max(PLAYER_MIN_SPEED, PLAYER_MAX_SPEED - (this.level - 1) * 20);
+        this.speed = Math.max(PLAYER.MIN_SPEED, PLAYER.MAX_SPEED - (this.level - 1) * 20);
 
         if (prevLevel !== this.level) {
             this.hp = this.maxHp;
@@ -73,7 +73,7 @@ class Player {
             this.hitCooldown = true;
             setTimeout(() => {
                 this.hitCooldown = false;
-            }, PLAYER_HIT_COOLDOWN);
+            }, PLAYER.HIT_COOLDOWN);
 
             setValueForShortTime(this, 'hit');
         }
@@ -83,28 +83,28 @@ class Player {
         const rect = {};
         switch (this.direction) {
             case 'RIGHT':
-                rect.x = this.x + PLAYER_SIZE + 1;
+                rect.x = this.x + PLAYER.SIZE + 1;
                 rect.y = this.y;
-                rect.width = DAMAGE_DISTANCE;
-                rect.height = PLAYER_SIZE;
+                rect.width = PLAYER.DAMAGE_DISTANCE;
+                rect.height = PLAYER.SIZE;
                 break;
             case 'LEFT':
-                rect.x = this.x - DAMAGE_DISTANCE - 1;
+                rect.x = this.x - PLAYER.DAMAGE_DISTANCE - 1;
                 rect.y = this.y;
-                rect.width = DAMAGE_DISTANCE;
-                rect.height = PLAYER_SIZE;
+                rect.width = PLAYER.DAMAGE_DISTANCE;
+                rect.height = PLAYER.SIZE;
                 break;
             case 'DOWN':
                 rect.x = this.x;
-                rect.y = this.y + PLAYER_SIZE + 1;
-                rect.width = PLAYER_SIZE;
-                rect.height = DAMAGE_DISTANCE;
+                rect.y = this.y + PLAYER.SIZE + 1;
+                rect.width = PLAYER.SIZE;
+                rect.height = PLAYER.DAMAGE_DISTANCE;
                 break;
             case 'UP':
                 rect.x = this.x;
-                rect.y = this.y - DAMAGE_DISTANCE - 1;
-                rect.width = PLAYER_SIZE;
-                rect.height = DAMAGE_DISTANCE;
+                rect.y = this.y - PLAYER.DAMAGE_DISTANCE - 1;
+                rect.width = PLAYER.SIZE;
+                rect.height = PLAYER.DAMAGE_DISTANCE;
                 break;
             default:
                 break;
@@ -122,6 +122,12 @@ class Player {
 
     calculatePosition(dt) {
         const direction = DIRECTION_MAPPING[this.direction];
+        if (direction === undefined) {
+            return {
+                x: this.x,
+                y: this.y,
+            }
+        }
         return {
             x: this.x + Math.round(dt * this.speed * Math.sin(direction)),
             y: this.y - Math.round(dt * this.speed * Math.cos(direction)),

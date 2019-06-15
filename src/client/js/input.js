@@ -22,7 +22,7 @@ export const stopCapturingInput = () => {
     document.removeEventListener('keyup', onKeyUp);
 };
 
-const pressedKeys = new Set();
+const pressedMoveKeys = new Set();
 
 function onKeyDown(event) {
     const { keyCode } = event;
@@ -33,8 +33,8 @@ function onKeyDown(event) {
 
     event.preventDefault();
 
-    pressedKeys.add(keyCode);
     if (KEY_CODES_MOVE.includes(keyCode)) {
+        pressedMoveKeys.add(keyCode);
         const direction = KEY_CODES_MAPPING[keyCode];
         movePlayer(direction);
     }
@@ -50,12 +50,15 @@ function onKeyUp(event) {
         return;
     }
 
-    pressedKeys.delete(keyCode);
-    if (!pressedKeys.size) {
-        stopPlayer();
-    } else {
-        const lastPressedKey = [...pressedKeys].pop();
-        const direction = KEY_CODES_MAPPING[lastPressedKey];
-        movePlayer(direction);
+    if (KEY_CODES_MOVE.includes(keyCode)) {
+        pressedMoveKeys.delete(keyCode);
+
+        if (!pressedMoveKeys.size) {
+            stopPlayer();
+        } else {
+            const lastPressedKey = [...pressedMoveKeys].pop();
+            const direction = KEY_CODES_MAPPING[lastPressedKey];
+            movePlayer(direction);
+        }
     }
 }

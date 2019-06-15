@@ -1,4 +1,4 @@
-import { CELL_SIZE, MAP_SIZE, PLAYER_SIZE, MAP_OBJECT, ITEM, ITEM_SIZE } from '../../shared/constants';
+import { CELL_SIZE, MAP_SIZE, PLAYER, MAP_OBJECT, ITEM, ITEM_SIZE } from '../../shared/constants';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
 
@@ -9,8 +9,8 @@ const context = canvas.getContext('2d');
 
 const WIDTH = MAP_SIZE * CELL_SIZE;
 const HEIGHT = MAP_SIZE * CELL_SIZE;
-const PLAYER_COORD = (MAP_SIZE * CELL_SIZE - PLAYER_SIZE) / 2;
-const PLAYER_SIZE_COMPENSATION = (CELL_SIZE - PLAYER_SIZE) / 2;
+const PLAYER_COORD = (MAP_SIZE * CELL_SIZE - PLAYER.SIZE) / 2;
+const PLAYER_SIZE_COMPENSATION = (CELL_SIZE - PLAYER.SIZE) / 2;
 const ITEM_SIZE_COMPENSATION = (CELL_SIZE - ITEM_SIZE) / 2;
 const CENTER_MAP_INDEX = Math.floor(MAP_SIZE / 2);
 const MAP_WRAPPER_SIZE = WIDTH - 2 * CELL_SIZE;
@@ -154,19 +154,19 @@ function renderPlayer({ direction, move, x, y, hit, injured }) {
         80,
         x,
         y,
-        PLAYER_SIZE,
-        PLAYER_SIZE
+        PLAYER.SIZE,
+        PLAYER.SIZE
     );
 }
 
 function renderHit(x, y) {
     context.fillStyle = 'white';
-    context.fillRect(x, y, PLAYER_SIZE, PLAYER_SIZE);
+    context.fillRect(x, y, PLAYER.SIZE, PLAYER.SIZE);
 }
 
 function renderGetDamage(x, y) {
     context.fillStyle = 'red';
-    context.fillRect(x, y, PLAYER_SIZE, PLAYER_SIZE);
+    context.fillRect(x, y, PLAYER.SIZE, PLAYER.SIZE);
 }
 
 const panelX = 10 + CELL_SIZE;
