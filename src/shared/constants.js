@@ -1,8 +1,9 @@
 const mazeSize = 51;
 const cellSize = 64;
-const unitSize = cellSize - 20;
+const unitSize = cellSize * 0.5;
 
 module.exports = Object.freeze({
+    SPRITE_FRAGMET: 64,
     MAZE_SIZE: mazeSize,
     MAP_SIZE: 11,
     CELL_SIZE: cellSize,

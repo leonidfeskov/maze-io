@@ -1,4 +1,4 @@
-import { CELL_SIZE, MAP_SIZE, PLAYER, MAP_OBJECT, ITEM, ITEM_SIZE } from '../../shared/constants';
+import { CELL_SIZE, MAP_SIZE, PLAYER, MAP_OBJECT, ITEM, ITEM_SIZE, SPRITE_FRAGMET } from '../../shared/constants';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
 
@@ -32,7 +32,7 @@ setInterval(() => {
     if (tickNumber > 3) {
         tickNumber = 0;
     }
-}, 200);
+}, 150);
 
 function render() {
     if (!renderProcess) {
@@ -45,7 +45,7 @@ function render() {
 }
 
 function renderBackground() {
-    context.fillStyle = 'black';
+    context.fillStyle = 'gray';
     context.fillRect(0, 0, WIDTH, HEIGHT);
 }
 
@@ -60,7 +60,7 @@ function renderObjects(state) {
     renderMap(map, movementOffset);
     renderMe(me);
     renderPlayers(players, me, movementOffset);
-    renderPanel(me);
+    // renderPanel(me);
 }
 
 function renderMap(map, movementOffset) {
@@ -68,20 +68,28 @@ function renderMap(map, movementOffset) {
         return;
     }
 
-    const wall = getAsset('block-block.svg');
+    const wall = getAsset('wall.png');
+    const coin = getAsset('coin-sprite.png');
+    const floor = getAsset('floor.png');
+
+    map.forEach((row, y) => {
+        row.forEach((cell, x) => {
+            drawMapCell(floor, x, y, movementOffset);
+        });
+    });
 
     map.forEach((row, y) => {
         row.forEach((cell, x) => {
             if (cell === MAP_OBJECT.WALL) {
                 drawWall(wall, x, y, movementOffset);
             } else if (cell === ITEM.COIN) {
-                drawItem(x, y, movementOffset);
+                drawCoin(coin, x, y, movementOffset);
             }
         });
     });
 }
 
-function drawWall(image, x, y, offset) {
+function drawMapCell(image, x, y, offset) {
     context.drawImage(
         image,
         x * CELL_SIZE - offset.x,
@@ -91,9 +99,28 @@ function drawWall(image, x, y, offset) {
     );
 }
 
-function drawItem(x, y, offset) {
-    context.fillStyle = 'yellow';
-    context.fillRect(
+const additionalSize3D = SPRITE_FRAGMET / 8;
+function drawWall(image, x, y, offset) {
+    context.drawImage(
+        image,
+        0,
+        0,
+        SPRITE_FRAGMET + additionalSize3D,
+        SPRITE_FRAGMET + additionalSize3D,
+        x * CELL_SIZE - offset.x,
+        y * CELL_SIZE - offset.y,
+        CELL_SIZE + additionalSize3D,
+        CELL_SIZE + additionalSize3D,
+    );
+}
+
+function drawCoin(image, x, y, offset) {
+    context.drawImage(
+        image,
+        tickNumber * SPRITE_FRAGMET,
+        0,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
         x * CELL_SIZE - offset.x + ITEM_SIZE_COMPENSATION,
         y * CELL_SIZE - offset.y + ITEM_SIZE_COMPENSATION,
         ITEM_SIZE,
@@ -127,15 +154,15 @@ function renderPlayers(players, me, movementOffset) {
 }
 
 function renderPlayer({ direction, move, x, y, hit, injured }) {
-    const playerImage = getAsset('mario-sprite.png');
+    const playerImage = getAsset('pig-sprite.png');
 
     let sy = 0;
     if (direction === 'RIGHT') {
-        sy = 80;
-    } else if (direction === 'UP') {
-        sy = 160;
+        sy = SPRITE_FRAGMET;
+    } else if (direction === 'DOWN') {
+        sy = SPRITE_FRAGMET * 2;
     } else if (direction === 'LEFT') {
-        sy = 240;
+        sy = SPRITE_FRAGMET * 3;
     }
 
     if (hit) {
@@ -148,10 +175,10 @@ function renderPlayer({ direction, move, x, y, hit, injured }) {
 
     context.drawImage(
         playerImage,
-        move ? tickNumber * 80 : 0,
+        move ? tickNumber * SPRITE_FRAGMET : 0,
         sy,
-        80,
-        80,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
         x,
         y,
         PLAYER.SIZE,

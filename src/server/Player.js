@@ -24,7 +24,7 @@ class Player {
         this.mapY = mapY;
         this.x = mapX * CELL_SIZE + PLAYER_OFFSET;
         this.y = mapY * CELL_SIZE + PLAYER_OFFSET;
-        this.direction = 'RIGHT';
+        this.direction = 'DOWN';
 
         this.level = 1;
 
