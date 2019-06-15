@@ -5,7 +5,7 @@ const socketio = require('socket.io');
 
 const webpackConfig = require('../../webpack.config.js');
 const { MESSAGE } = require('../shared/constants');
-const Game = require('./game');
+const Game = require('./Game');
 
 const app = express();
 app.use(express.static('public'));

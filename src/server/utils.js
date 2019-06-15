@@ -16,6 +16,15 @@ function getCell(map, x, y) {
     return map[coords.y][coords.x];
 }
 
+function isIntersectWithPoint(point, rect) {
+    return !(
+        point.x > rect.x + PLAYER_SIZE ||
+        point.x < rect.x ||
+        point.y > rect.y + PLAYER_SIZE ||
+        point.y < rect.y
+    );
+}
+
 function isIntersectRect(rectA, rectB) {
     return !(
         rectB.x > rectA.x + rectA.width ||
@@ -71,5 +80,6 @@ module.exports = {
     getCoordinates,
     isIntersectWithPlayers,
     isIntersectBlock,
+    isIntersectWithPoint,
     hitByPlayers,
 };

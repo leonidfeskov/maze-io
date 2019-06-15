@@ -2,20 +2,6 @@ const { MAP_SIZE, MAZE_SIZE, MAP_OBJECT } = require('../shared/constants');
 const { random } = require('./utils');
 const generateMaze  = require('./generateMaze');
 
-const testMap = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-];
-
 class Maze {
     constructor() {
         this.map = generateMaze(MAZE_SIZE, MAZE_SIZE);

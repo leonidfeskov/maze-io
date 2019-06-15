@@ -1,7 +1,8 @@
-const { MESSAGE } = require('../shared/constants');
-const Player = require('./player');
-const Maze = require('./maze');
-const { isIntersectBlock, isIntersectWithPlayers, hitByPlayers } = require('./utils');
+const { MESSAGE, ITEM, COIN_COUNT, ITEM_SIZE, MAP_OBJECT } = require('../shared/constants');
+const Player = require('./Player');
+const Maze = require('./Maze');
+const Item = require('./Item');
+const { isIntersectBlock, isIntersectWithPlayers, hitByPlayers, isIntersectWithPoint } = require('./utils');
 
 const FPS = 1000 / 60;
 
@@ -13,9 +14,21 @@ class Game {
         this.shouldSendUpdate = false;
         this.maze = new Maze();
 
+        this.coins = {};
+        for (let i = 0; i < COIN_COUNT; i++) {
+            this.spawnCoin(i);
+        }
+
         setInterval(() => {
-            this.update()
+            this.update();
         }, FPS);
+    }
+
+    spawnCoin(index) {
+        const coord = this.maze.getRandomEmptyCell();
+        this.maze.map[coord.y][coord.x] = ITEM.COIN;
+        const id = new Date().getTime() + index;
+        this.coins[id] = new Item(ITEM.COIN, coord.x, coord.y);
     }
 
     getPlayer(socket) {
@@ -78,6 +91,16 @@ class Game {
                 ) {
                     player.update(newPosition);
                 }
+                Object.keys(this.coins).forEach((coinId) => {
+                    const coin = this.coins[coinId];
+                    const x = coin.x + (ITEM_SIZE / 2);
+                    const y = coin.y + (ITEM_SIZE / 2);
+                    if (isIntersectWithPoint({x, y}, newPosition)) {
+                        this.maze.map[coin.mapY][coin.mapX] = MAP_OBJECT.EMPTY;
+                        delete this.coins[coinId];
+                        this.spawnCoin(0);
+                    }
+                });
             }
         });
     }

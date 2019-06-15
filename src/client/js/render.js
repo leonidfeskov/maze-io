@@ -1,4 +1,4 @@
-import { CELL_SIZE, MAP_SIZE, PLAYER_SIZE, MAP_OBJECT, PLAYER_SPEED } from '../../shared/constants';
+import { CELL_SIZE, MAP_SIZE, PLAYER_SIZE, MAP_OBJECT, ITEM, ITEM_SIZE, PLAYER_SPEED } from '../../shared/constants';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
 
@@ -11,6 +11,7 @@ const WIDTH = MAP_SIZE * CELL_SIZE;
 const HEIGHT = MAP_SIZE * CELL_SIZE;
 const PLAYER_COORD = (MAP_SIZE * CELL_SIZE - PLAYER_SIZE) / 2;
 const PLAYER_SIZE_COMPENSATION = (CELL_SIZE - PLAYER_SIZE) / 2;
+const ITEM_SIZE_COMPENSATION = (CELL_SIZE - ITEM_SIZE) / 2;
 const CENTER_MAP_INDEX = Math.floor(MAP_SIZE / 2);
 const MAP_WRAPPER_SIZE = WIDTH - 2 * CELL_SIZE;
 
@@ -73,6 +74,8 @@ function renderMap(map, movementOffset) {
         row.forEach((cell, x) => {
             if (cell === MAP_OBJECT.WALL) {
                 drawWall(wall, x, y, movementOffset);
+            } else if (cell === ITEM.COIN) {
+                drawItem(x, y, movementOffset);
             }
         });
     });
@@ -81,15 +84,21 @@ function renderMap(map, movementOffset) {
 function drawWall(image, x, y, offset) {
     context.drawImage(
         image,
-        // 0,
-        // 0,
-        // 200,
-        // 200,
         x * CELL_SIZE - offset.x,
         y * CELL_SIZE - offset.y,
         CELL_SIZE,
         CELL_SIZE,
     );
+}
+
+function drawItem(x, y, offset) {
+    context.fillStyle = 'yellow';
+    context.fillRect(
+        x * CELL_SIZE - offset.x + ITEM_SIZE_COMPENSATION,
+        y * CELL_SIZE - offset.y + ITEM_SIZE_COMPENSATION,
+        ITEM_SIZE,
+        ITEM_SIZE
+    )
 }
 
 function renderMe(me) {
@@ -164,7 +173,6 @@ const panelX = 10 + CELL_SIZE;
 const panelY = 10 + CELL_SIZE;
 const hpWidth = CELL_SIZE * 2;
 const hpHeight = CELL_SIZE / 4;
-
 
 function renderPanel({ maxHp, hp }) {
     context.strokeStyle = 'white';

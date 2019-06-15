@@ -1,11 +1,17 @@
 module.exports = Object.freeze({
     MAP_SIZE: 7,
     MAZE_SIZE: 7,
+    CELL_SIZE: 100,
     MAP_OBJECT: {
         EMPTY: 0,
         WALL: 1,
     },
-    CELL_SIZE: 100,
+    ITEM: {
+        COIN: 10,
+        LIFE: 11,
+    },
+    COIN_COUNT: 2,
+    ITEM_SIZE: 80,
     DAMAGE_DISTANCE: 40,
     PLAYER_SIZE: 80,
     PLAYER_SPEED: 200,
