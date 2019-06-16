@@ -1,5 +1,6 @@
 const { PLAYER, CELL_SIZE } = require('../shared/constants');
 const { getCoordinates } = require('./utils');
+const createName = require('./playerNames');
 
 const PLAYER_OFFSET = (CELL_SIZE - PLAYER.SIZE) / 2;
 
@@ -20,6 +21,7 @@ const setValueForShortTime = (player, value) => {
 class Player {
     constructor(id, mapX, mapY) {
         this.id = id;
+        this.name = createName();
         this.mapX = mapX;
         this.mapY = mapY;
         this.x = mapX * CELL_SIZE + PLAYER_OFFSET;
@@ -146,6 +148,7 @@ class Player {
     getState() {
         return {
             id: this.id,
+            name: this.name,
             x: this.x,
             y: this.y,
             mapX: this.mapX,

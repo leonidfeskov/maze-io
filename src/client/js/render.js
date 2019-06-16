@@ -376,11 +376,15 @@ function renderLeaderboard({ me, players }) {
     const top10 = allPlayers.slice(0, 10);
 
     top10.forEach((player, index) => {
-        renderPlayerOnBoard(player, index);
+        renderPlayerOnBoard(player, index, me.id);
     })
 }
 
-function renderPlayerOnBoard(player, index) {
+function renderPlayerOnBoard(player, index, meId) {
+    if (player.id === meId) {
+        leaderBoardCtx.fillStyle = 'green';
+        leaderBoardCtx.fillRect( 0, PLAYER.SIZE * index, LEADERBOARD_WIDTH, PLAYER.SIZE)
+    }
     leaderBoardCtx.drawImage(
         images.pig[player.level],
         0,
@@ -394,9 +398,9 @@ function renderPlayerOnBoard(player, index) {
     );
     leaderBoardCtx.textAlign = 'left';
     leaderBoardCtx.textBaseline = 'middle';
-    leaderBoardCtx.fillStyle = 'black';
     leaderBoardCtx.font = '14px Arial';
-    leaderBoardCtx.fillText(player.id, PLAYER.SIZE + 5, PLAYER.SIZE * index + PLAYER.SIZE / 2);
+    leaderBoardCtx.fillStyle = 'black';
+    leaderBoardCtx.fillText(player.name, PLAYER.SIZE + 5, PLAYER.SIZE * index + PLAYER.SIZE / 2);
     leaderBoardCtx.fill();
 
     leaderBoardCtx.drawImage(
