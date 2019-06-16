@@ -7,8 +7,15 @@ const mapWrapper = document.querySelector('.js-game');
 const canvas = document.querySelector('.js-game-canvas');
 const context = canvas.getContext('2d');
 
+const leaderBoard = document.querySelector('.js-leaderboard');
+const leaderBoardCtx = leaderBoard.getContext('2d');
+
 const WIDTH = MAP_SIZE * CELL_SIZE;
 const HEIGHT = MAP_SIZE * CELL_SIZE;
+
+const LEADERBOARD_WIDTH = CELL_SIZE * 4;
+const LEADERBOARD_HEIGHT = HEIGHT - CELL_SIZE * 2;
+
 const PLAYER_COORD = (MAP_SIZE * CELL_SIZE - PLAYER.SIZE) / 2;
 const PLAYER_SIZE_COMPENSATION = (CELL_SIZE - PLAYER.SIZE) / 2;
 const ITEM_SIZE_COMPENSATION = (CELL_SIZE - ITEM_SIZE) / 2;
@@ -22,6 +29,10 @@ canvas.style.marginTop = `-${CELL_SIZE}px`;
 
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
+
+
+leaderBoard.width = LEADERBOARD_WIDTH;
+leaderBoard.height = LEADERBOARD_HEIGHT;
 
 let renderProcess = false;
 
@@ -67,6 +78,7 @@ function render() {
     const state = getCurrentState();
     renderBackground();
     renderObjects(state);
+    renderLeaderboard(state);
     window.requestAnimationFrame(render);
 }
 
@@ -351,6 +363,56 @@ function renderText(text, x, y) {
     context.fillText(text, x + 2, y + 2);
     context.fillStyle = 'white';
     context.fillText(text, x, y);
+}
+
+function renderLeaderboard({ me, players }) {
+    leaderBoardCtx.clearRect(0, 0, LEADERBOARD_WIDTH, LEADERBOARD_HEIGHT);
+
+    const allPlayers = [me, ...players];
+    allPlayers.sort((a, b) => {
+        return b.coins - a.coins;
+    });
+
+    const top10 = allPlayers.slice(0, 10);
+
+    top10.forEach((player, index) => {
+        renderPlayerOnBoard(player, index);
+    })
+}
+
+function renderPlayerOnBoard(player, index) {
+    leaderBoardCtx.drawImage(
+        images.pig[player.level],
+        0,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
+        0,
+        PLAYER.SIZE * index,
+        PLAYER.SIZE,
+        PLAYER.SIZE,
+    );
+    leaderBoardCtx.textAlign = 'left';
+    leaderBoardCtx.textBaseline = 'middle';
+    leaderBoardCtx.fillStyle = 'black';
+    leaderBoardCtx.font = '14px Arial';
+    leaderBoardCtx.fillText(player.id, PLAYER.SIZE + 5, PLAYER.SIZE * index + PLAYER.SIZE / 2);
+    leaderBoardCtx.fill();
+
+    leaderBoardCtx.drawImage(
+        images.coin,
+        0,
+        0,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
+        LEADERBOARD_WIDTH - ITEM_SIZE,
+        PLAYER.SIZE * index,
+        ITEM_SIZE,
+        ITEM_SIZE,
+    );
+
+    leaderBoardCtx.textAlign = 'right';
+    leaderBoardCtx.fillText(player.coins, LEADERBOARD_WIDTH - ITEM_SIZE - 5,PLAYER.SIZE * index + PLAYER.SIZE / 2);
 }
 
 export const startRendering = () => {
