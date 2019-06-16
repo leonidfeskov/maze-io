@@ -27,7 +27,7 @@ let renderProcess = false;
 
 let tickNumber = 0;
 
-const images = {};
+let images = null;
 
 setInterval(() => {
     tickNumber++;
@@ -40,13 +40,29 @@ function render() {
     if (!renderProcess) {
         return;
     }
-    images.pig = getAsset('pig-sprite.png');
-    images.wall = getAsset('wall.png');
-    images.coin = getAsset('coin-sprite.png');
-    images.floor = getAsset('floor.png');
-    images.heart = getAsset('heart-sprite.png');
-    images.sword = getAsset('sword-sprite.png');
-    images.boot = getAsset('boot.png');
+
+    if (!images) {
+        images = {
+            pig: {
+                1: getAsset('pig-sprite1.png'),
+                2: getAsset('pig-sprite2.png'),
+                3: getAsset('pig-sprite3.png'),
+                4: getAsset('pig-sprite4.png'),
+                5: getAsset('pig-sprite5.png'),
+                6: getAsset('pig-sprite6.png'),
+                7: getAsset('pig-sprite7.png'),
+                8: getAsset('pig-sprite8.png'),
+                9: getAsset('pig-sprite9.png'),
+                10: getAsset('pig-sprite10.png'),
+            },
+            wall: getAsset('wall.png'),
+            coin: getAsset('coin-sprite.png'),
+            floor: getAsset('floor.png'),
+            heart: getAsset('heart-sprite.png'),
+            sword: getAsset('sword-sprite.png'),
+            boot: getAsset('boot.png'),
+        };
+    }
 
     const state = getCurrentState();
     renderBackground();
@@ -159,7 +175,7 @@ function renderPlayers(players, me, movementOffset) {
     });
 }
 
-function renderPlayer({ direction, move, x, y, hit, injured }) {
+function renderPlayer({ level, direction, move, x, y, hit, injured }) {
     let sy = 0;
     if (direction === 'RIGHT') {
         sy = SPRITE_FRAGMET;
@@ -174,7 +190,7 @@ function renderPlayer({ direction, move, x, y, hit, injured }) {
     }
 
     context.drawImage(
-        images.pig,
+        images.pig[level],
         move ? tickNumber * SPRITE_FRAGMET : 0,
         sy,
         SPRITE_FRAGMET,
@@ -255,7 +271,7 @@ function renderCharacter(level) {
     context.fillStyle = 'white';
     context.fillRect(PANEL_GAP, PANEL_GAP, CELL_SIZE, CELL_SIZE);
     context.drawImage(
-        images.pig,
+        images.pig[level],
         0,
         SPRITE_FRAGMET,
         SPRITE_FRAGMET,

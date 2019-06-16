@@ -44,7 +44,8 @@ class Player {
 
     calculateStats() {
         const prevLevel = this.level;
-        this.level = Math.min(PLAYER.MAX_LEVEL, Math.floor(Math.log2(this.coins)) + 1);
+        // this.level = Math.min(PLAYER.MAX_LEVEL, Math.floor(Math.log2(this.coins)) + 1);
+        this.level = this.coins + 1;
         this.maxHp = PLAYER.MAX_LEVEL - this.level + 1;
         this.attack = this.level;
         const speedDelta = Math.round((PLAYER.MAX_SPEED - PLAYER.MIN_SPEED) / PLAYER.MAX_LEVEL);
