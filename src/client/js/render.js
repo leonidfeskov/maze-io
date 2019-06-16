@@ -169,10 +169,6 @@ function renderPlayer({ direction, move, x, y, hit, injured }) {
         sy = SPRITE_FRAGMET * 3;
     }
 
-    if (hit) {
-        renderHit(x, y);
-    }
-
     if (injured) {
         renderGetDamage(x, y);
     }
@@ -188,11 +184,52 @@ function renderPlayer({ direction, move, x, y, hit, injured }) {
         PLAYER.SIZE,
         PLAYER.SIZE
     );
+
+    if (hit) {
+        renderHit(x, y, direction);
+    }
 }
 
-function renderHit(x, y) {
-    context.fillStyle = 'white';
-    context.fillRect(x, y, PLAYER.SIZE, PLAYER.SIZE);
+function renderHit(x, y, direction) {
+    const result = {x, y, fragment: 0};
+    switch (direction) {
+        case 'UP': {
+            result.x = x;
+            result.y = y - PLAYER.DAMAGE_DISTANCE;
+            break;
+        }
+        case 'RIGHT': {
+            result.x = x + PLAYER.DAMAGE_DISTANCE;
+            result.y = y;
+            result.fragment = 1;
+            break;
+        }
+        case 'DOWN': {
+            result.x = x;
+            result.y = y + PLAYER.DAMAGE_DISTANCE;
+            result.fragment = 2;
+            break;
+        }
+        case 'LEFT': {
+            result.x = x - PLAYER.DAMAGE_DISTANCE;
+            result.y = y;
+            result.fragment = 3;
+            break;
+        }
+        default:
+            break;
+    }
+    context.drawImage(
+        images.sword,
+        0,
+        SPRITE_FRAGMET * result.fragment,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
+        result.x,
+        result.y,
+        ITEM_SIZE,
+        ITEM_SIZE
+    );
 }
 
 function renderGetDamage(x, y) {
