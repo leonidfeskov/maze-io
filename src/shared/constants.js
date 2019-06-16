@@ -1,4 +1,4 @@
-const mazeSize = 51;
+const mazeSize = 11;
 const cellSize = 64;
 const unitSize = cellSize * 0.5;
 

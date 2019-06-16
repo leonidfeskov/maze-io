@@ -27,6 +27,8 @@ let renderProcess = false;
 
 let tickNumber = 0;
 
+const images = {};
+
 setInterval(() => {
     tickNumber++;
     if (tickNumber > 3) {
@@ -38,6 +40,14 @@ function render() {
     if (!renderProcess) {
         return;
     }
+    images.pig = getAsset('pig-sprite.png');
+    images.wall = getAsset('wall.png');
+    images.coin = getAsset('coin-sprite.png');
+    images.floor = getAsset('floor.png');
+    images.heart = getAsset('heart-sprite.png');
+    images.sword = getAsset('sword-sprite.png');
+    images.boot = getAsset('boot.png');
+
     const state = getCurrentState();
     renderBackground();
     renderObjects(state);
@@ -60,7 +70,7 @@ function renderObjects(state) {
     renderMap(map, movementOffset);
     renderMe(me);
     renderPlayers(players, me, movementOffset);
-    // renderPanel(me);
+    renderPanel(me);
 }
 
 function renderMap(map, movementOffset) {
@@ -68,22 +78,18 @@ function renderMap(map, movementOffset) {
         return;
     }
 
-    const wall = getAsset('wall.png');
-    const coin = getAsset('coin-sprite.png');
-    const floor = getAsset('floor.png');
-
     map.forEach((row, y) => {
         row.forEach((cell, x) => {
-            drawMapCell(floor, x, y, movementOffset);
+            drawMapCell(images.floor, x, y, movementOffset);
         });
     });
 
     map.forEach((row, y) => {
         row.forEach((cell, x) => {
             if (cell === MAP_OBJECT.WALL) {
-                drawWall(wall, x, y, movementOffset);
+                drawWall(images.wall, x, y, movementOffset);
             } else if (cell === ITEM.COIN) {
-                drawCoin(coin, x, y, movementOffset);
+                drawCoin(images.coin, x, y, movementOffset);
             }
         });
     });
@@ -154,8 +160,6 @@ function renderPlayers(players, me, movementOffset) {
 }
 
 function renderPlayer({ direction, move, x, y, hit, injured }) {
-    const playerImage = getAsset('pig-sprite.png');
-
     let sy = 0;
     if (direction === 'RIGHT') {
         sy = SPRITE_FRAGMET;
@@ -174,7 +178,7 @@ function renderPlayer({ direction, move, x, y, hit, injured }) {
     }
 
     context.drawImage(
-        playerImage,
+        images.pig,
         move ? tickNumber * SPRITE_FRAGMET : 0,
         sy,
         SPRITE_FRAGMET,
@@ -196,20 +200,104 @@ function renderGetDamage(x, y) {
     context.fillRect(x, y, PLAYER.SIZE, PLAYER.SIZE);
 }
 
-const panelX = 10 + CELL_SIZE;
-const panelY = 10 + CELL_SIZE;
+const PANEL_GAP = CELL_SIZE * 1.125;
 
-function renderPanel({ level, maxHp, hp, attack, speed, coins }) {
+function renderPanel({ level, maxHp, hp, attack, coins }) {
+    context.textBaseline = 'middle';
+    context.textAlign = 'center';
+    context.font = '24px Arial';
+    renderCharacter(level);
+    renderHP(maxHp, hp);
+    renderStat(0, 'sword', attack);
+    renderStat(1, 'boot', maxHp);
+    renderCoins(coins)
+}
+
+function renderCharacter(level) {
+    const center = PANEL_GAP + CELL_SIZE / 2;
     context.fillStyle = 'white';
-    context.fillRect(panelX, panelY, CELL_SIZE * (MAP_SIZE - 2) - 20, 30);
-
-    context.font = '18px serif';
+    context.fillRect(PANEL_GAP, PANEL_GAP, CELL_SIZE, CELL_SIZE);
+    context.drawImage(
+        images.pig,
+        0,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
+        center - PLAYER.SIZE / 2,
+        center - PLAYER.SIZE / 2,
+        PLAYER.SIZE,
+        PLAYER.SIZE,
+    );
+    const centerLevel = PANEL_GAP + CELL_SIZE / 4;
     context.fillStyle = 'black';
-    // context.textBaseline = 'middle';
-    // context.textAlign = 'center';
-    // context.fillText(`${hp} / ${maxHp}`, hpWidth / 2 + panelX, hpHeight / 2 + panelY);
+    context.fillText(level, centerLevel, centerLevel);
+}
 
-    context.fillText(`level: ${level}, maxHp: ${maxHp}, hp: ${hp}, attack: ${attack}, speed: ${speed}, coins: ${coins}`, panelX + 10, panelY + 20);
+function renderHP(maxHP, hp) {
+    const start = {
+        x: PANEL_GAP + CELL_SIZE + 10,
+        y: PANEL_GAP,
+    };
+    for (let i = 0; i < maxHP; i++) {
+        context.drawImage(
+            images.heart,
+            hp > i ? 0 : SPRITE_FRAGMET,
+            0,
+            SPRITE_FRAGMET,
+            SPRITE_FRAGMET,
+            start.x + (ITEM_SIZE) * i,
+            start.y,
+            ITEM_SIZE,
+            ITEM_SIZE,
+        )
+    }
+}
+
+function renderStat(position, imageName, value) {
+    const width = ITEM_SIZE * 2;
+    const x = PANEL_GAP + CELL_SIZE + 10 + (width + 10) * position;
+    const y = PANEL_GAP + ITEM_SIZE;
+
+    context.fillStyle = 'white';
+    context.drawImage(
+        images[imageName],
+        0,
+        0,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
+        x,
+        y,
+        ITEM_SIZE,
+        ITEM_SIZE,
+    );
+    renderText(value, x + ITEM_SIZE * 1.5, y + ITEM_SIZE / 2);
+}
+
+function renderCoins(coins) {
+    const x = CELL_SIZE * (MAP_SIZE - 1) - CELL_SIZE * 0.125;
+    const y = PANEL_GAP;
+
+    context.fillStyle = 'white';
+    context.drawImage(
+        images.coin,
+        0,
+        0,
+        SPRITE_FRAGMET,
+        SPRITE_FRAGMET,
+        x - ITEM_SIZE,
+        y,
+        ITEM_SIZE,
+        ITEM_SIZE,
+    );
+    context.textAlign = 'right';
+    renderText(coins, x - ITEM_SIZE - 10, y + ITEM_SIZE / 2);
+}
+
+function renderText(text, x, y) {
+    context.fillStyle = 'black';
+    context.fillText(text, x + 2, y + 2);
+    context.fillStyle = 'white';
+    context.fillText(text, x, y);
 }
 
 export const startRendering = () => {

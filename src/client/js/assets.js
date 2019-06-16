@@ -2,6 +2,8 @@ const ASSETS_NAMES = [
     'pig-sprite.png',
     'coin-sprite.png',
     'heart-sprite.png',
+    'sword-sprite.png',
+    'boot.png',
     'wall.png',
     'floor.png',
 ];
